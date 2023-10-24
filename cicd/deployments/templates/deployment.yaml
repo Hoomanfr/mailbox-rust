@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.srvName }}-deployment
+  labels:
+    app: {{ .Values.srvName }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.srvName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.srvName }}
+        canary: "false" 
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+      - name: {{ .Values.srvName }}
+        image: {{ .Values.dockerImage }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.httpPort }}
+        readinessProbe:
+          httpGet:
+            path: "/health-check"
+            port: {{ .Values.httpPort }}
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.srvName }}-secret
+              key: database_url

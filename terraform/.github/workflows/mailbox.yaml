@@ -1,0 +1,21 @@
+name: 'Mailbox pull request trigger'
+
+on:
+  push:
+    paths:
+      - "staging/services/mailbox/**"
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  the_job:
+    uses: ./.github/workflows/base.yaml
+    with:
+      tf_workspace: staging/services/mailbox
+    secrets:
+      # This is holding the content of mailboc-gcp-token.json
+      gcp_credentials: ${{ secrets.GCP_CREDENTIALS }}
+      pg_username: ${{ secrets.PG_USERNAME }}
+      pg_password: ${{ secrets.PG_PASSWORD }}
+    

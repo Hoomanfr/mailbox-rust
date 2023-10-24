@@ -1,0 +1,10 @@
+name: Mailbox CI
+
+on:
+  pull_request:
+
+jobs:
+  build-test:
+    name: Build and Unit Test Mailbox
+    uses: Hoomanfr/cicd/.github/workflows/ci.yaml@v0.2.70
+      

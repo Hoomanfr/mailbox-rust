@@ -1,0 +1,24 @@
+[package]
+name = "mailbox"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = {version = "0.4.24", features = ["serde"]}
+axum = "0.6.18"
+tokio = { version = "1.27.0", features = ["full"] }
+futures = "0.3"
+tower-http = { version = "0.4.0", features = ["cors"] }
+serde = { version = "1.0.159", features = ["derive"] }
+serde_json = "1.0.95"
+async-trait = "0.1.68"
+sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls", "any", "postgres", "chrono"] }
+regex = "1.7.3"
+uuid = { version = "1.3.0", features = ["v4", "fast-rng", "macro-diagnostics"] }
+# you need to run this in terminal: cargo --config "net.git-fetch-with-cli = true"
+# or set the env the following env var: CARGO_NET_GIT_FETCH_WITH_CLI=true
+# or run: CARGO_NET_GIT_FETCH_WITH_CLI=true cargo build
+# then run: CARGO_NET_GIT_FETCH_WITH_CLI=true cargo update to update to latest version 
+rustlib = { git = "ssh://git@github.com/Hoomanfr/rustlib.git", tag="v0.1.24" }

@@ -1,0 +1,69 @@
+name: CICD Release
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#allowing-access-to-components-in-a-private-repository
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  release:
+    name: Release CICD
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+     
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0
+        with:
+          versionSpec: '5.x'
+      
+      - name: Determine Version
+        id:   gitversion
+        uses: gittools/actions/gitversion/execute@v0
+
+      - uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
+      
+      - uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: v${{ steps.gitversion.outputs.semVer }}
+
+      # https://github.com/actions-rs/meta/blob/master/recipes/quickstart.md
+      - name: Rust Toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      
+      # - name: Cargo Check
+      #   uses: actions-rs/cargo@v1
+      #   with:
+      #     command: check
+
+      - name: Cargo Test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+      
+      # - name: Cargo Release 
+      #   uses: actions-rs/cargo@v1
+      #   with:
+      #     command: build
+      #     args: --release --all-features
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUBACTION_TOKEN }} 
+        with:
+          tag_name: v${{ steps.gitversion.outputs.semVer }}
+          release_name: v${{ steps.gitversion.outputs.semVer }}
+          draft: false
+          prerelease: false

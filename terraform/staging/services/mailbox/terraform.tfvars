@@ -1,0 +1,6 @@
+project_id = "hoomanfr-domain"
+project_name = "hoomanfr-domain"
+region  = "us-west1"
+zone    = "us-west1-c"
+bucket = "terraform-state-ywkewq7z8a"
+prefix = "staging/services/mailbox"

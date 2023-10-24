@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Mailbox",
+            "program": "${workspaceFolder}/target/debug/mailbox",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "ENVIRONMENT": "dev",
+                "DOMAIN": "wms",
+                "SERVICE": "mailbox",
+                "VAULT_ADDR": "https://34.168.165.181:8200",
+                "VAULT_TOKEN": "s.rCO7OV2nfAz10ocGATOJcDDn",
+                "RUST_BACKTRACE": "1",
+            },
+        }
+    ]
+}
